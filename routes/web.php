@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Post;
+use App\Http\Controllers\MyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/about', 'MyController@showAbout');
+
+Route::get('/testmodel', function(){
+    $query = Post::all();
+    return $query;
+});
+Auth::routes();
+
+
+
+Route::group(['middleware' => ['auth'], 'prefix' => 'client-area'], function(){
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');  
 });
