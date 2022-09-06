@@ -19,7 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/about', 'MyController@showAbout');
 
 Route::get('/testmodel', function(){
     $query = Post::all();
@@ -30,5 +29,15 @@ Auth::routes();
 
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'client-area'], function(){
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');  
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); 
+    Route::get('/about', 'MyController@showAbout'); 
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth','isAdmin']],function(){
+    Route::get('/profile', function(){
+        return view('profile');
+    });
+});
+Route::get('/errors', function(){
+    return view('403');
 });
